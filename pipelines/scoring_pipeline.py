@@ -117,29 +117,6 @@ def scoring_pipeline(
     register_task.set_memory_limit("1Gi")
 
 
+
 if __name__ == "__main__":
     compiler.Compiler().compile(scoring_pipeline, package_path="scoring_pipeline.yaml")
-train_task.after(drift_task) : pas d'entraînement si le test ne ressemble pas à l'entraînement ; register_task.after(eval_task, model_task) : on n'enregistre (même en @challenger) qu'un modèle évalué et validé.
-Les seuils de drift deviennent des paramètres du pipeline, lus dans params.yaml à la compilation, modifiables au lancement d'un run.
-Mémoire mesurée (composant + sous-processus) : environ 450 Mo pour detect-drift, 580 Mo pour validate-model, d'où les limites à 1 Gi.
-python -m pipelines.scoring_pipeline
-wc -l scoring_pipeline.yaml
-python - <<'EOF'
-from kfp import local
-
-from pipelines.scoring_pipeline import scoring_pipeline
-
-local.init(runner=local.SubprocessRunner(use_venv=False))
-scoring_pipeline(mlflow_uri="http://localhost:5000")
-EOF
-Sortie attendue : 795 scoring_pipeline.yaml. En une minute environ, les 8 tâches passent en SUCCESS : validate-data (67 expectations), detect-drift (pas de drift), validate-model (Modèle VALIDÉ), puis register-model (@champion -> version …).
-
-6.4 Image 1.2.0 et runs sur le cluster
-sed -i 's/scoring-pipeline:1.1.0/scoring-pipeline:1.2.0/' \
-    pipelines/components.py dags/scoring_dag.py
-docker build -f pipelines/Dockerfile --build-arg VERSION=1.2.0 \
-    -t localhost:5001/scoring-pipeline:1.2.0 .
-docker push localhost:5001/scoring-pipeline:1.2.0
-python -m pipelines.scoring_pipeline
-python -m pipelines.drift_demo
-grep -c "image: localhost:5001/scoring-pipeline:1.2.0" scoring_pipeline.yaml
