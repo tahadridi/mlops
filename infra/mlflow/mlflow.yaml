@@ -72,7 +72,7 @@ spec:
             - secretRef:
                 name: s3-credentials
           env:
-            - { name: MLFLOW_S3_ENDPOINT_URL, value: "http://s3.storage:8333" }
+            - { name: MLFLOW_S3_ENDPOINT_URL, value: "http://seaweedfs-s3.storage:8333" }
             - { name: AWS_DEFAULT_REGION, value: us-east-1 }
             # Pas d'exécuteur de tâches en arrière-plan (inutile ici, ~170 Mo par worker)
             - { name: MLFLOW_SERVER_ENABLE_JOB_EXECUTION, value: "false" }

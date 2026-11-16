@@ -130,7 +130,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: s3
+  name: seaweedfs-s3
   namespace: storage
 spec:
   selector:

@@ -1,0 +1,36 @@
+cmd: python -m src.evaluate
+deps:
+- path: data/processed/test.csv
+  hash: md5
+  md5: 80c14461d82ef43b1897f9431f18922a
+  size: 28866
+  isexec: true
+- path: models/model
+  hash: md5
+  md5: 4bdb57e26e59dcc905d99b31f6c5afc6.dir
+  size: 282185
+  nfiles: 5
+- path: src/evaluate.py
+  hash: md5
+  md5: e4d7d56a0708c2a4ec9d9bea3543486a
+  size: 1591
+  isexec: true
+- path: src/train.py
+  hash: md5
+  md5: 36d7e5254992362bda007e7dea878d0a
+  size: 8664
+  isexec: true
+params:
+  dataset.yaml:
+    metrics:
+      primary: roc_auc
+      promotion_threshold: 0.7
+      cost_matrix:
+        false_negative: 5
+        false_positive: 1
+outs:
+- path: reports/metrics.json
+  hash: md5
+  md5: c48bc6c02758f5cd86709de5f74be221
+  size: 284
+  isexec: true

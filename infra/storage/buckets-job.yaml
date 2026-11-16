@@ -22,7 +22,7 @@ spec:
                 name: s3-credentials
           env:
             - { name: AWS_DEFAULT_REGION, value: us-east-1 }
-            - { name: AWS_ENDPOINT_URL, value: "http://s3.storage:8333" }
+            - { name: AWS_ENDPOINT_URL, value: "http://seaweedfs-s3.storage:8333" }
           command: ["/bin/sh", "-c"]
           args:
             - |
